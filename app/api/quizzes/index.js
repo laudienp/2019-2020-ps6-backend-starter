@@ -1,12 +1,22 @@
 const { Router } = require('express')
 
 const { Quiz } = require('../../models')
+const QuestionRouter = require('./questions')
 
 const router = new Router()
 
 router.get('/', (req, res) => {
   try {
     res.status(200).json(Quiz.get())
+  } catch (err) {
+    res.status(500).json(err)
+  }
+})
+
+router.get('/:quizId', (req, res) => {
+  try {
+    console.log("xx"+req.params.quizId)
+    res.status(200).json(Quiz.getById(req.params.quizId))
   } catch (err) {
     res.status(500).json(err)
   }
@@ -24,5 +34,23 @@ router.post('/', (req, res) => {
     }
   }
 })
+
+router.delete('/:quizId', (req, res) => {
+  try {
+    res.status(200).json(Quiz.delete(req.params.quizId))
+  } catch(err) {
+    res.status(500).json(err)
+  }
+})
+
+router.put('/:quizId', (req, res) => {
+  try {
+    res.status(200).json(Quiz.update(req.params.quizId, req.body))
+  } catch(err) {
+    res.status(500).json(err)
+  }
+})
+
+router.use('/:quizId/questions', QuestionRouter)
 
 module.exports = router
