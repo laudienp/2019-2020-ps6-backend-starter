@@ -8,5 +8,4 @@ router.get('/status', (req, res) => res.status(200).json('ok'))
 router.use('/quizzes', QuizzesRouter)
 router.use('/users', UsersRouter)
 
-
 module.exports = router
