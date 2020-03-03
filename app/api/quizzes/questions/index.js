@@ -6,7 +6,10 @@ const router = new Router({mergeParams: true})
 
 router.get('/', (req, res) => {
     try {
-        res.status(200).json(Question.get())
+      const qlist = Question.get().filter(question => {
+        return question.quizId == req.params.quizId
+      })
+      res.status(200).json(qlist)
     } catch (err) {
         res.status(500).json(err)
     }

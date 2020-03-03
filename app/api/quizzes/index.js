@@ -1,13 +1,19 @@
 const { Router } = require('express')
 
 const { Quiz } = require('../../models')
+const { Question } = require('../../models')
 const QuestionRouter = require('./questions')
 
 const router = new Router()
 
 router.get('/', (req, res) => {
   try {
-    res.status(200).json(Quiz.get())
+    quizz = Quiz.get()
+    qlist = Question.get()
+
+
+
+    res.status(200).json(quizz)
   } catch (err) {
     res.status(500).json(err)
   }
@@ -16,7 +22,15 @@ router.get('/', (req, res) => {
 router.get('/:quizId', (req, res) => {
   try {
     console.log("xx"+req.params.quizId)
-    res.status(200).json(Quiz.getById(req.params.quizId))
+    quizz = Quiz.getById(req.params.quizId)
+    qlist = Question.get()
+    qselected = []
+    qlist.forEach(element => {
+      if(element.quizId == req.params.quizId)
+        qselected.push(element)
+    });
+    quizz.questions = qselected
+    res.status(200).json(quizz)
   } catch (err) {
     res.status(500).json(err)
   }
